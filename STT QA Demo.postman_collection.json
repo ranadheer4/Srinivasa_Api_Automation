@@ -1,0 +1,3038 @@
+{
+	"info": {
+		"_postman_id": "5076e11c-4ae4-416a-96b8-74a7e3e6fcf3",
+		"name": "STT QA Demo",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" width=\"2162\" height=\"1530\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17046662",
+		"_collection_link": "https://tericsoft.postman.co/workspace/QA-Workspace~6f3d265d-a1a2-4b13-94cd-d87357bb756c/collection/17046662-5076e11c-4ae4-416a-96b8-74a7e3e6fcf3?action=share&source=collection_link&creator=17046662"
+	},
+	"item": [
+		{
+			"name": "AdminBFF",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "requestOTP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Name</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{name}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());",
+											"",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time is less than 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response has message field\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.have.property('message');",
+											"    pm.expect(jsonData.data.message).to.equal(\"OTP sent successfully\");",
+											"});",
+											"",
+											"pm.test(\"Email is correct in response\", function () {",
+											"    let jsonData = pm.response.json();",
+											"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"{{email}}\"));",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/auth/request-otp",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"request-otp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/*pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 1s\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+											"});",
+											"",
+											"let jsonData = pm.response.json();",
+											"pm.environment.set(\"token\", jsonData.data.token);",
+											"",
+											"pm.test(\"Token is present\", function () {",
+											"    pm.expect(jsonData).to.have.property(\"{{token}}\");",
+											"});",
+											"*/",
+											"",
+											"let res = pm.response.json();",
+											"",
+											"pm.test(\"Login success\", () => {",
+											"    pm.response.to.have.status(200);",
+											"    pm.expect(res.data).to.have.property(\"token\");",
+											"});",
+											"",
+											"// Save token to environment",
+											"pm.environment.set(\"token\", res.data.token);",
+											"",
+											"// Save user details",
+											"pm.environment.set(\"userId\", res.data.user.id);",
+											"pm.environment.set(\"userName\", res.data.user.name);",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\",\n    \"otp\": \"{{otp}}\"\n}\n\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/auth/login",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "check login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Name</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{name}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());",
+											"",
+											"pm.test(\"Status 200\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"let res = pm.response.json();",
+											"pm.test(\"User is active\", () => {",
+											"    pm.expect(res.data.is_active).to.eql(true);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/auth/check-login",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"check-login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "profile",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Name</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{name}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());",
+											"",
+											"",
+											"pm.test(\"Status 200\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"let res = pm.response.json();",
+											"pm.test(\"Profile email matches\", () => {",
+											"    pm.expect(res.data.email).to.eql(pm.environment.get(\"email\"));",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/auth/profile",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "profile",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Name</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{name}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());",
+											"",
+											"const res = pm.response.json().data;",
+											"",
+											"//pm.test(\"Email updated\", () => {",
+											"  //  pm.expect(res.email).to.eql(pm.environment.get(\"email\"));",
+											"//});",
+											"pm.test(\"Email Upadted\", function () {",
+											"    let jsonData = pm.response.json();",
+											"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"{{email}}\"));",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\"\n    // \"aadhar_number\": \"BIUPAG233\"\n    //pan_number\n    //contact_number\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/auth/profile",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cities",
+					"item": [
+						{
+							"name": "add",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// If CSV has value, use it, else random fallback",
+											"let name = pm.iterationData.get(\"cityName\") ",
+											"    ? pm.iterationData.get(\"cityName\") ",
+											"    : \"City_\" + Math.floor(Math.random() * 10);",
+											"",
+											"pm.environment.set(\"cityName\", name);",
+											"console.log(\"City created:\", name);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status = 200\", () => pm.response.to.have.status(200));",
+											"",
+											"let res = pm.response.json();",
+											"let message = res.data.message;",
+											"let cityID = res.data.data.id;",
+											"",
+											"pm.test(\"City creation success message\", () => ",
+											"    pm.expect(message).to.include(\"Added Successfully\"));",
+											"",
+											"pm.test(\"City ID returned\", () => ",
+											"    pm.expect(cityID).to.be.a(\"number\"));",
+											"",
+											"pm.environment.set(\"cityID\", cityID);",
+											"console.log(\"Saved cityID:\", cityID);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{cityName}}\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"City update success\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"City updated message\", () => {",
+											"    pm.expect(pm.response.json().data.message).to.include(\"edited successfully\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{cityName}}\",\n    \"is_active\": \"true\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city/{{cityID}}",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city",
+										"{{cityID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has data array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.exist;",
+											"    pm.expect(jsonData.data.data).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"City data structure is valid\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if (jsonData.data.data.length > 0) {",
+											"        var city = jsonData.data.data[0];",
+											"        pm.expect(city).to.have.property('id');",
+											"        pm.expect(city).to.have.property('name');",
+											"        pm.expect(city).to.have.property('is_active');",
+											"        pm.expect(city).to.have.property('num_of_areas');",
+											"        pm.expect(city).to.have.property('num_of_routes');",
+											"        pm.expect(city).to.have.property('created_at');",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"packages": {},
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city?page=1",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "ban",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lite",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city/lite?is_active=true",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city",
+										"lite"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "hyd",
+											"disabled": true
+										},
+										{
+											"key": "is_active",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status = 200\", () => pm.response.to.have.status(200));",
+											"",
+											"let res = pm.response.json().data;",
+											"",
+											"//pm.test(\"City name matches\", () => ",
+											"    //pm.expect(res.name).to.eql(pm.environment.get(\"cityName\")));",
+											"",
+											"pm.test(\"City is inactive\", () => ",
+											"    pm.expect(res.is_active).to.eql(true));",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    // \"name\": \"hyderabad\"\n    \"is_active\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city/{{cityID}}",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city",
+										"{{cityID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									"// Read city from CSV else generate random",
+									"let inputCity = pm.iterationData.get(\"city\");",
+									"",
+									"if (!inputCity) {",
+									"    inputCity = \"City_\" + Date.now() + \"_\" + Math.floor(Math.random() * 1000);",
+									"}",
+									"",
+									"// Set env var",
+									"pm.environment.set(\"cityName\", inputCity);",
+									"console.log(\"City Name Set:\", inputCity);",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									"const res = pm.response.json();",
+									"const status = pm.response.code;",
+									"",
+									"// If duplicate city name -> regenerate automatically",
+									"if(status === 400 && res.detail && res.detail.includes(\"exists\")) {",
+									"    console.warn(\"City name exists. Retrying with a new name...\");",
+									"",
+									"    // Generate new unique name",
+									"    const newCity = \"City_\" + Date.now() + \"_\" + Math.floor(Math.random() * 9999);",
+									"    pm.environment.set(\"cityName\", newCity);",
+									"",
+									"    // Automatically retry request",
+									"    postman.setNextRequest(pm.info.requestName);",
+									"} else {",
+									"",
+									"    pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"    pm.test(\"City added message\", () => {",
+									"        pm.expect(res.data.message.toLowerCase()).to.include(\"added\");",
+									"    });",
+									"    pm.test(\"City ID returned\", () => {",
+									"        pm.expect(res.data.data.id).to.exist;",
+									"        pm.environment.set(\"cityID\", res.data.data.id);",
+									"    });",
+									"",
+									"    console.log(\"✅ Created City ID:\", pm.environment.get(\"cityID\"));",
+									"}",
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Areas",
+					"item": [
+						{
+							"name": "add",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Function to generate random strings",
+											"function randomString(length) {",
+											"    let chars = 'abcdefghijklmnopqrstuvwxyz';",
+											"    let result = '';",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"// Function to generate random coordinates",
+											"function randomCoordinate(min, max) {",
+											"    return (Math.random() * (max - min) + min).toFixed(6);",
+											"}",
+											"",
+											"// Create an array of 10 random areas",
+											"let areas = [];",
+											"for (let i = 1; i <= 10; i++) {",
+											"    let areaName = \"Area_\" + randomString(5);",
+											"    let pointName = \"Point_\" + randomString(4);",
+											"    let address = \"Near \" + pointName;",
+											"    let latitude = randomCoordinate(10, 20);",
+											"    let longitude = randomCoordinate(70, 90);",
+											"",
+											"    areas.push({",
+											"        name: areaName,",
+											"        points: [",
+											"            {",
+											"                name: pointName,",
+											"                address: address,",
+											"                latitude: parseFloat(latitude),",
+											"                longitude: parseFloat(longitude)",
+											"            }",
+											"        ]",
+											"    });",
+											"}",
+											"",
+											"// Pick one area randomly for this request (to avoid too large payloads)",
+											"let randomArea = areas[Math.floor(Math.random() * areas.length)];",
+											"",
+											"// Save full set in environment for reuse",
+											"pm.environment.set(\"allAreas\", JSON.stringify(areas));",
+											"pm.environment.set(\"randomArea\", JSON.stringify(randomArea));",
+											"",
+											"// Log to console",
+											"console.log(\"📍 Generated 10 random areas:\", areas);",
+											"console.log(\"➡️ Selected Area for current request:\", randomArea);",
+											"",
+											"// Set request body dynamically",
+											"pm.variables.set(\"areaBody\", JSON.stringify(randomArea, null, 2));",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"let res = pm.response.json();",
+											"console.log(\"🧩 Response:\", res);",
+											"",
+											"// Validate message",
+											"pm.test(\"Added Successfully\", function () {",
+											"    pm.expect(res.data.message).to.eql(\"added successfully\");",
+											"});",
+											"",
+											"// Validate ID is returned",
+											"pm.test(\"Area ID is numeric\", function () {",
+											"    pm.expect(res.data.data.id).to.be.a(\"number\");",
+											"});",
+											"",
+											"// Save areaID for reuse",
+											"let areaID = res.data.data.id;",
+											"pm.environment.set(\"areaID\", areaID);",
+											"",
+											"console.log(\"✅ Created Area ID:\", areaID);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{areaBody}}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city/{{cityID}}/area",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city",
+										"{{cityID}}",
+										"area"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// ✅ Function to generate random name",
+											"function randomString(length) {",
+											"    const chars = \"abcdefghijklmnopqrstuvwxyz\";",
+											"    let result = \"\";",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"// ✅ Create random area name",
+											"let updatedAreaName = \"Area_\" + randomString(6);",
+											"",
+											"// ✅ Save to environment for reuse",
+											"pm.environment.set(\"updatedAreaName\", updatedAreaName);",
+											"",
+											"// ✅ Log for debugging",
+											"console.log(\"🔁 Updated Area Name:\", updatedAreaName);",
+											"",
+											"// ✅ Prepare request body dynamically",
+											"const body = {",
+											"    name: updatedAreaName",
+											"};",
+											"pm.variables.set(\"editAreaBody\", JSON.stringify(body, null, 2));",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Parse JSON response",
+											"let res = pm.response.json();",
+											"",
+											"// ✅ Validate Status Code",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// ✅ Validate Success Message",
+											"pm.test(\"Area edited successfully\", function () {",
+											"    pm.expect(res.data.message).to.eql(\"edited successfully\");",
+											"});",
+											"",
+											"// ✅ Store updated area name for future use",
+											"let updatedName = pm.environment.get(\"updatedAreaName\");",
+											"pm.environment.set(\"finalAreaName\", updatedName);",
+											"",
+											"console.log(\"✅ Area Name Updated To:\", updatedName);",
+											"",
+											"// ✅ Optional - Revalidate area in next GET (if available)",
+											"pm.test(\"Area update variable stored successfully\", function () {",
+											"    pm.expect(updatedName).to.be.a(\"string\").and.not.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{editAreaBody}}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/area/{{areaID}}",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"area",
+										"{{areaID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/area/1",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"area",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city/{{cityID}}/area",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city",
+										"{{cityID}}",
+										"area"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lite",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();",
+											"",
+											"// Status code validation",
+											"pm.test(\"Status code is 200\", function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Data array existence",
+											"pm.test(\"Area data array exists\", function() {",
+											"    pm.expect(response).to.have.property(\"data\");",
+											"    pm.expect(response.data).to.be.an(\"array\");",
+											"});",
+											"",
+											"// Major area fields existence (for each area)",
+											"response.data.forEach(function(area) {",
+											"    pm.test(\"Area has major fields\", function() {",
+											"        pm.expect(area).to.have.property(\"id\");",
+											"        pm.expect(area).to.have.property(\"name\");",
+											"    });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/city/{{cityID}}/area/lite",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"city",
+										"{{cityID}}",
+										"area",
+										"lite"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "mett",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service points",
+					"item": [
+						{
+							"name": "add",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// ✅ Generate random string function",
+											"function randomString(length) {",
+											"    const chars = \"abcdefghijklmnopqrstuvwxyz\";",
+											"    let result = \"\";",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"// ✅ Generate random coordinates",
+											"function randomCoordinate(base) {",
+											"    return (base + Math.random()).toFixed(5);",
+											"}",
+											"",
+											"// ✅ Get area ID (should be set from Area creation)",
+											"let areaID = pm.environment.get(\"areaID\");",
+											"if (!areaID) {",
+											"    console.warn(\"⚠️ areaID not found in environment. Please ensure Add Area API ran first.\");",
+											"}",
+											"",
+											"// ✅ Create dynamic service point data",
+											"let servicePoint = {",
+											"    name: \"SP_\" + randomString(5),",
+											"    address: \"Auto Address \" + randomString(3),",
+											"    latitude: Number(randomCoordinate(12)),",
+											"    longitude: Number(randomCoordinate(77))",
+											"};",
+											"",
+											"// ✅ Store request body and log",
+											"pm.variables.set(\"servicePointBody\", JSON.stringify(servicePoint, null, 2));",
+											"console.log(\"🟢 Service Point Data:\", servicePoint);",
+											"",
+											"// ✅ Also store name for validation later",
+											"pm.environment.set(\"servicePointName\", servicePoint.name);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let res = pm.response.json();",
+											"let spName = pm.environment.get(\"servicePointName\");",
+											"",
+											"// ✅ Validate response status",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// ✅ Validate message",
+											"pm.test(\"Service point added successfully\", function () {",
+											"    pm.expect(res.data.message.toLowerCase()).to.include(\"added successfully\");",
+											"});",
+											"",
+											"// ✅ Validate structure",
+											"pm.test(\"Response contains id and area_id\", function () {",
+											"    pm.expect(res.data.data).to.have.property(\"id\");",
+											"    pm.expect(res.data.data).to.have.property(\"area_id\");",
+											"});",
+											"",
+											"// ✅ Store service point ID for next use",
+											"pm.environment.set(\"servicePointID\", res.data.data.id);",
+											"pm.environment.set(\"serviceAreaID\", res.data.data.area_id);",
+											"",
+											"console.log(\"✅ Service Point Created:\", spName, \"ID:\", res.data.data.id);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{servicePointBody}}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/area/{{areaID}}/service-point",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"area",
+										"{{areaID}}",
+										"service-point"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// ✅ Generate random string",
+											"function randomString(length) {",
+											"    const chars = \"abcdefghijklmnopqrstuvwxyz\";",
+											"    let result = \"\";",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"// ✅ Fetch existing variables from environment",
+											"let areaID = pm.environment.get(\"areaID\");",
+											"let servicePointID = pm.environment.get(\"servicePointID\");",
+											"",
+											"if (!areaID || !servicePointID) {",
+											"    console.warn(\"⚠️ areaID or servicePointID missing. Please run Add Area & Add Service Point first.\");",
+											"}",
+											"",
+											"// ✅ Randomly update Service Point fields",
+											"let updatedServicePoint = {",
+											"    name: \"SP_Edit_\" + randomString(4),",
+											"    address: \"Updated Address \" + randomString(3),",
+											"    is_active: true,",
+											"    latitude: (12 + Math.random()).toFixed(5),",
+											"    longitude: (77 + Math.random()).toFixed(5)",
+											"};",
+											"",
+											"// ✅ Set the request body dynamically",
+											"pm.variables.set(\"editServicePointBody\", JSON.stringify(updatedServicePoint, null, 2));",
+											"pm.environment.set(\"updatedServicePointName\", updatedServicePoint.name);",
+											"",
+											"console.log(\"🟢 Updating Service Point:\", updatedServicePoint);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let res = pm.response.json();",
+											"let updatedName = pm.environment.get(\"updatedServicePointName\");",
+											"",
+											"// ✅ Validate response status",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// ✅ Validate message in response",
+											"pm.test(\"Edit message is correct\", function () {",
+											"    pm.expect(res.data.message.toLowerCase()).to.include(\"edited successfully\");",
+											"});",
+											"",
+											"// ✅ Save new name for future validations",
+											"pm.environment.set(\"lastEditedServicePointName\", updatedName);",
+											"",
+											"console.log(\"✅ Edited Service Point:\", updatedName);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{editServicePointBody}}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/area/{{areaID}}/service-point/{{servicePointID}}",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"area",
+										"{{areaID}}",
+										"service-point",
+										"{{servicePointID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>Name</th>",
+											"        <th>Address</th>",
+											"        <th>Latitude</th>",
+											"        <th>Longitude</th>",
+											"        <th>ID</th>",
+											"        <th>Active</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response}}",
+											"        <tr>",
+											"            <td>{{name}}</td>",
+											"            <td>{{address}}</td>",
+											"            <td>{{latitude}}</td>",
+											"            <td>{{longitude}}</td>",
+											"            <td>{{id}}</td>",
+											"            <td>{{is_active}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/shuttle/area/1/service-point",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"shuttle",
+										"area",
+										"1",
+										"service-point"
+									],
+									"query": [
+										{
+											"key": "is_active",
+											"value": "true",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "add",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Helper to generate random values",
+											"function randomNumber(length) {",
+											"    let result = '';",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += Math.floor(Math.random() * 10);",
+											"    }",
+											"    return result;",
+											"}",
+											"function randomString(length) {",
+											"    let chars = 'abcdefghijklmnopqrstuvwxyz';",
+											"    let result = '';",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"// Get values from iteration data or environment, else generate random",
+											"let supervisor = pm.iterationData.get(\"sup_role\") ||",
+											"pm.environment.get(\"sup_role\")",
+											"",
+											"let name = pm.iterationData.get(\"sup_name\") || pm.environment.get(\"sup_name\") || (\"super_\" + randomString(4));",
+											"let email = pm.iterationData.get(\"sup_email\") || pm.environment.get(\"sup_email\") || (\"super_\" + randomString(4) + \"@gmail.com\");",
+											"let phone = pm.iterationData.get(\"sup_contact_number\") || pm.environment.get(\"sup_contact_number\") || (\"9\" + randomNumber(9));",
+											"let pan = pm.iterationData.get(\"sup_pan_number\") || pm.environment.get(\"sup_pan_number\") || (randomString(5).toUpperCase() + randomNumber(4) + randomString(1).toUpperCase());",
+											"let aadhar = pm.iterationData.get(\"sup_aadhar_number\") || pm.environment.get(\"sup_aadhar_number\") || (randomNumber(12));",
+											"",
+											"// City from CSV or environment fallback",
+											"let city_ids = pm.iterationData.get(\"cityID\") || pm.environment.get(\"cityID\");",
+											"",
+											"// Set variables for use in request body",
+											"pm.variables.set(\"sup_name\", name);",
+											"pm.variables.set(\"sup_role\", supervisor)",
+											"pm.variables.set(\"sup_email\", email);",
+											"pm.variables.set(\"sup_contact_number\", phone);",
+											"pm.variables.set(\"sup_pan_number\", pan);",
+											"pm.variables.set(\"sup_aadhar_number\", aadhar);",
+											"pm.variables.set(\"city_id\", city_ids);",
+											"",
+											"// Optionally set in environment if needed elsewhere",
+											"//pm.environment.set(\"city_id\", city_ids);",
+											"",
+											"console.log(\"Supervisor =>\", { name, supervisor, email, phone, pan, aadhar, city_ids });"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>Error Code</th>",
+											"        <th>Error Message</th>",
+											"    </tr>",
+											"    <tr>",
+											"        <td>500</td>",
+											"        <td>Internal Server Error</td>",
+											"    </tr>",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: \"Internal Server Error\"};",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());",
+											"pm.test(\"Status is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"let res;",
+											"try {",
+											"    res = pm.response.json();",
+											"} catch (e) {",
+											"    pm.test(\"Response is valid JSON\", function () {",
+											"        pm.expect.fail(\"Response is not valid JSON\");",
+											"    });",
+											"}",
+											"",
+											"if (res && res.data && res.data.message) {",
+											"    pm.test(\"Supervisor created successfully\", function () {",
+											"        pm.expect(res.data.message).to.include(\"Added Successfully\");",
+											"    });",
+											"    pm.test(\"Supervisor ID returned\", function () {",
+											"        pm.expect(res.data.data.id).to.be.a(\"number\");",
+											"    });",
+											"    pm.environment.set(\"supervisorID\", res.data.data.id);",
+											"} else {",
+											"    pm.test(\"Supervisor creation failed\", function () {",
+											"        pm.expect.fail(\"Supervisor creation did not return expected data structure\");",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "{{sup_name}}",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "{{sup_email}}",
+											"type": "text"
+										},
+										{
+											"key": "contact_number",
+											"value": "{{sup_contact_number}}",
+											"type": "text"
+										},
+										{
+											"key": "city_ids",
+											"value": "{{cityID}}",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "supervisor",
+											"type": "text"
+										},
+										{
+											"key": "pan_number",
+											"value": "{{sup_pan_number}}",
+											"type": "text"
+										},
+										{
+											"key": "aadhar_number",
+											"value": "{{sup_aadhar_number}}",
+											"type": "text"
+										},
+										{
+											"key": "aadhar_document",
+											"type": "file",
+											"src": "postman-cloud:///1f0a9e08-7cc5-4890-8ec8-deb7961bf9fa"
+										},
+										{
+											"key": "pan_document",
+											"type": "file",
+											"src": "postman-cloud:///1f0a9e07-a7a4-4fd0-bea1-3104cf55d9ca"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/user",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>Error Code</th>",
+											"        <th>Error Message</th>",
+											"    </tr>",
+											"    <tr>",
+											"        <td>500</td>",
+											"        <td>Internal Server Error</td>",
+											"    </tr>",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: \"Internal Server Error\"};",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "supe",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "ram@gmail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "contact_number",
+											"value": "9988776655",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "city_ids",
+											"value": "{{cityID}}",
+											"type": "text"
+										},
+										{
+											"key": "city_ids",
+											"value": "5",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "role",
+											"value": "admin",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "pan_number",
+											"value": "123456huq",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "aadhar_number",
+											"value": "1234567891",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "pan_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47",
+											"disabled": true
+										},
+										{
+											"key": "aadhar_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47",
+											"disabled": true
+										},
+										{
+											"key": "is_active",
+											"value": "true",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/user/7",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"user",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/user?page=1&limit=1&role=supervisor",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"user"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "1"
+										},
+										{
+											"key": "city_id",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "admi",
+											"disabled": true
+										},
+										{
+											"key": "role",
+											"value": "supervisor"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "list",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{admin_url}}/admin/master/user?page=1&limit=1&dfdfds=1",
+											"host": [
+												"{{admin_url}}"
+											],
+											"path": [
+												"admin",
+												"master",
+												"user"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "limit",
+													"value": "1"
+												},
+												{
+													"key": "city_id",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "search",
+													"value": "user",
+													"disabled": true
+												},
+												{
+													"key": "dfdfds",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 27 Mar 2025 16:21:00 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "165"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"data\": [\n            {\n                \"name\": \"test\",\n                \"email\": \"test@gmail.com\",\n                \"contact_number\": \"1111111111\",\n                \"is_active\": true,\n                \"id\": 2\n            }\n        ],\n        \"page\": 1,\n        \"limit\": 1,\n        \"total_pages\": 4,\n        \"total_count\": 4\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "view",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/user/7",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"user",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "city users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/city/{{cityID}}/user",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"city",
+										"{{cityID}}",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Driver",
+					"item": [
+						{
+							"name": "add",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>Error Code</th>",
+											"        <th>Error Message</th>",
+											"    </tr>",
+											"    <tr>",
+											"        <td>500</td>",
+											"        <td>Internal Server Error</td>",
+											"    </tr>",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: \"Internal Server Error\"};",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"let res = pm.response.json();",
+											"",
+											"// Basic validations",
+											"pm.test(\"Driver added successfully message\", function () {",
+											"    pm.expect(res.data.message).to.eql(\"Added Successfully\");",
+											"});",
+											"",
+											"pm.test(\"Driver ID returned in response\", function () {",
+											"    pm.expect(res.data.data.id).to.be.a(\"number\");",
+											"});",
+											"",
+											"// Save Driver ID for next requests",
+											"let driverID = res.data.data.id;",
+											"pm.environment.set(\"driverID\", driverID);",
+											"",
+											"console.log(\"✅ Driver Created Successfully, ID:\", driverID);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Generate random driver details for uniqueness",
+											"function randomString(length) {",
+											"    let chars = 'abcdefghijklmnopqrstuvwxyz';",
+											"    let result = '';",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"let randomName = \"driver_\" + randomString(5);",
+											"let randomEmail = randomName + \"@gmail.com\";",
+											"let randomPhone = \"9\" + Math.floor(100000000 + Math.random() * 899999999);",
+											"let panNumber = \"PN\" + Math.floor(100000 + Math.random() * 899999);",
+											"let aadharNumber = Math.floor(100000000000 + Math.random() * 899999999999);",
+											"let licenseNumber = \"DL\" + Math.floor(1000 + Math.random() * 8999);",
+											"",
+											"// Set environment variables",
+											"pm.environment.set(\"driverName\", randomName);",
+											"pm.environment.set(\"driverEmail\", randomEmail);",
+											"pm.environment.set(\"driverPhone\", randomPhone);",
+											"pm.environment.set(\"driverPan\", panNumber);",
+											"pm.environment.set(\"driverAadhar\", aadharNumber);",
+											"pm.environment.set(\"driverLicense\", licenseNumber);",
+											"",
+											"// Log for debug",
+											"console.log(\"Generated Driver Data:\", {",
+											"    randomName, randomEmail, randomPhone, panNumber, aadharNumber, licenseNumber",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "{{driverName}}",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "{{driverEmail}}",
+											"type": "text"
+										},
+										{
+											"key": "contact_number",
+											"value": "{{driverPhone}}",
+											"type": "text"
+										},
+										{
+											"key": "city_id",
+											"value": "{{cityID}}",
+											"type": "text"
+										},
+										{
+											"key": "pan_number",
+											"value": "{{driverPan}}",
+											"type": "text"
+										},
+										{
+											"key": "aadhar_number",
+											"value": "{{driverAadhar}}",
+											"type": "text"
+										},
+										{
+											"key": "pan_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47"
+										},
+										{
+											"key": "aadhar_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47"
+										},
+										{
+											"key": "medical_fitness_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47"
+										},
+										{
+											"key": "background_verification_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47"
+										},
+										{
+											"key": "driver_license_number",
+											"value": "{{driverLicense}}",
+											"type": "text"
+										},
+										{
+											"key": "driver_license_expiry",
+											"value": "2027-01-01",
+											"type": "text"
+										},
+										{
+											"key": "driver_license_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/driver",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"driver"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>Error Code</th>",
+											"        <th>Error Message</th>",
+											"    </tr>",
+											"    <tr>",
+											"        <td>500</td>",
+											"        <td>Internal Server Error</td>",
+											"    </tr>",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: \"Internal Server Error\"};",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "nishi singh",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "driver1@gmail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "contact_number",
+											"value": "0000000000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "city_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "pan_number",
+											"value": "123456huq",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "aadhar_number",
+											"value": "1234567891",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "pan_document",
+											"type": "file",
+											"src": "/Users/swethaswes/Downloads/MicroservicesProdChecklist_2025-03-26_16-55-49.pdf",
+											"disabled": true
+										},
+										{
+											"key": "aadhar_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47",
+											"disabled": true
+										},
+										{
+											"key": "medical_fitness_document",
+											"type": "file",
+											"src": "postman-cloud:///1eff4d8f-15e7-4f30-939b-65509aafbd47",
+											"disabled": true
+										},
+										{
+											"key": "background_verification_document",
+											"type": "file",
+											"src": "postman-cloud:///1eebb561-b004-4c50-9cff-ca97ab689d30",
+											"disabled": true
+										},
+										{
+											"key": "driver_license_document",
+											"type": "file",
+											"src": "postman-cloud:///1eebc15b-cdab-4910-94e2-b8f738c1ae63",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/driver/17",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"driver",
+										"17"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/driver?page=1",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"driver"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "city_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lite",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/driver/lite?ids=12",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"driver",
+										"lite"
+									],
+									"query": [
+										{
+											"key": "city_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "ids",
+											"value": "12"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/driver/17",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"driver",
+										"17"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "city drivers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();",
+											"",
+											"// Status code validation",
+											"pm.test(\"Status code is 200\", function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Data array existence",
+											"pm.test(\"Driver data array exists\", function() {",
+											"    pm.expect(response.data).to.have.property(\"data\");",
+											"    pm.expect(response.data.data).to.be.an(\"array\");",
+											"});",
+											"",
+											"// Major driver fields validation (for each driver)",
+											"response.data.data.forEach(function(driver) {",
+											"    pm.test(\"Driver has major fields\", function() {",
+											"        pm.expect(driver).to.have.property(\"id\");",
+											"        pm.expect(driver).to.have.property(\"name\");",
+											"        pm.expect(driver).to.have.property(\"email\");",
+											"        pm.expect(driver).to.have.property(\"contact_number\");",
+											"        pm.expect(driver).to.have.property(\"is_active\");",
+											"        pm.expect(driver).to.have.property(\"city_id\");",
+											"        // city property exists, may be null or object",
+											"        pm.expect(driver).to.have.property(\"city\");",
+											"    });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/city/{{cityID}}/driver",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"city",
+										"{{cityID}}",
+										"driver"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Vehicles",
+					"item": [
+						{
+							"name": "add",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Generate random vehicle details for uniqueness",
+											"function randomString(length) {",
+											"    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';",
+											"    let result = '';",
+											"    for (let i = 0; i < length; i++) {",
+											"        result += chars.charAt(Math.floor(Math.random() * chars.length));",
+											"    }",
+											"    return result;",
+											"}",
+											"",
+											"// Example random value generators",
+											"let randomVehicleNumber = \"TS\" + Math.floor(10 + Math.random() * 89) + randomString(2) + Math.floor(1000 + Math.random() * 8999);",
+											"let randomBrand = \"Brand_\" + randomString(3);",
+											"let randomModel = \"Model_\" + randomString(3);",
+											"let randomDevice = \"Device_\" + randomString(3);",
+											"let randomLayoutId = Math.floor(1 + Math.random() * 3); // 1-9",
+											"let randomInsurance = \"INS\" + Math.floor(10000 + Math.random() * 89999);",
+											"let randomTaxPermit = \"TAX\" + Math.floor(10000 + Math.random() * 89999);",
+											"",
+											"// Set environment variables",
+											"pm.environment.set(\"vehicleNumber\", randomVehicleNumber);",
+											"pm.environment.set(\"brandName\", randomBrand);",
+											"pm.environment.set(\"modelName\", randomModel);",
+											"pm.environment.set(\"deviceName\", randomDevice);",
+											"pm.environment.set(\"seatingLayoutId\", randomLayoutId);",
+											"pm.environment.set(\"insuranceNumber\", randomInsurance);",
+											"pm.environment.set(\"taxPermitNumber\", randomTaxPermit);",
+											"",
+											"// Optionally, for static city_id or image, set as needed",
+											"//pm.environment.set(\"cityId\", {{cityID}});",
+											"",
+											"// Log for debug",
+											"console.log(\"Generated Vehicle Data:\", {",
+											"    randomVehicleNumber, randomBrand, randomModel, randomDevice, randomLayoutId, randomInsurance, randomTaxPermit",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();",
+											"",
+											"// Status code check",
+											"pm.test(\"Status code is 200\", function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Response structure and success message",
+											"pm.test(\"Contains success message and vehicle id\", function() {",
+											"    pm.expect(response).to.have.property(\"data\");",
+											"    pm.expect(response.data).to.have.property(\"message\");",
+											"    pm.expect(response.data.message).to.include(\"Added Successfully\");",
+											"    pm.expect(response.data).to.have.property(\"data\");",
+											"    pm.expect(response.data.data).to.have.property(\"id\");",
+											"    pm.expect(response.data.data.id).to.be.a(\"number\");",
+											"});",
+											"",
+											"// Optionally, save created vehicle ID for follow-up checks (e.g. city list validation):",
+											"//pm.environment.set(\"lastVehicleId\", response.data.data.id);",
+											"let vehicleID = response.data.data.id;",
+											"pm.environment.set(\"vehicleID\", vehicleID);",
+											"",
+											"console.log(\"✅ Vehicle Created Successfully, ID:\", vehicleID);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "city_id",
+											"value": "{{cityID}}",
+											"type": "text"
+										},
+										{
+											"key": "vehicle_number",
+											"value": "{{vehicleNumber}}",
+											"type": "text"
+										},
+										{
+											"key": "brand_name",
+											"value": "{{brandName}}",
+											"type": "text"
+										},
+										{
+											"key": "model_name",
+											"value": "{{modelName}}",
+											"type": "text"
+										},
+										{
+											"key": "telematics_device_name",
+											"value": "{{deviceName}}",
+											"type": "text"
+										},
+										{
+											"key": "seating_layout_id",
+											"value": "{{seatingLayoutId}}",
+											"type": "text"
+										},
+										{
+											"key": "insurance_number",
+											"value": "{{insuranceNumber}}",
+											"type": "text"
+										},
+										{
+											"key": "tax_permit_number",
+											"value": "{{taxPermitNumber}}",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1f0a9e08-7cc5-4890-8ec8-deb7961bf9fa"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/vehicle",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"vehicle"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();",
+											"",
+											"// Status code validation",
+											"pm.test(\"Status code is 200\", function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Response contains success message",
+											"pm.test(\"Edit response has success message\", function() {",
+											"    pm.expect(response).to.have.property(\"data\");",
+											"    pm.expect(response.data).to.have.property(\"message\");",
+											"    pm.expect(response.data.message.toLowerCase()).to.include(\"edited successfully\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "city_id",
+											"value": "{{cityID}}",
+											"type": "text"
+										},
+										{
+											"key": "vehicle_number",
+											"value": "TS04DD4444",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "brand_name",
+											"value": "brand",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "model_name",
+											"value": "model",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "telematics_device_name",
+											"value": "device",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "seating_layout_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "insurance_number",
+											"value": "123456a",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tax_permit_number",
+											"value": "12344",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1eebb561-b004-4c50-9cff-ca97ab689d30",
+											"disabled": true
+										},
+										{
+											"key": "is_active",
+											"value": "true",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{admin_url}}/admin/master/vehicle/{{vehicleID}}",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"vehicle",
+										"{{vehicleID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/vehicle?city_id=1",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"vehicle"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "city_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lite",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();",
+											"",
+											"// Status code validation",
+											"pm.test(\"Status code is 200\", function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Data array existence",
+											"pm.test(\"Vehicles data array exists\", function() {",
+											"    pm.expect(response).to.have.property(\"data\");",
+											"    pm.expect(response.data).to.be.an(\"array\");",
+											"});",
+											"",
+											"// Major fields existence for each vehicle",
+											"response.data.forEach(function(vehicle) {",
+											"    pm.test(\"Vehicle has id and vehicle_number fields\", function() {",
+											"        pm.expect(vehicle).to.have.property(\"id\");",
+											"        pm.expect(vehicle).to.have.property(\"vehicle_number\");",
+											"    });",
+											"    pm.test(\"Vehicle has is_active field\", function() {",
+											"        pm.expect(vehicle).to.have.property(\"is_active\");",
+											"    });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/vehicle/lite",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"vehicle",
+										"lite"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "01",
+											"disabled": true
+										},
+										{
+											"key": "is_active",
+											"value": "true",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{admin_url}}/admin/master/vehicle/3",
+									"host": [
+										"{{admin_url}}"
+									],
+									"path": [
+										"admin",
+										"master",
+										"vehicle",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
